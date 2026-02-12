@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sticky Ads + Product Slider</title>
+  <style>
+    :root {
+      --unit-width: 250px;
+      --unit-z-index: 999999;
+      --primary-color: #cea593;
+      --secondary-color: #0e2648;
+      --brand-bg: #1d1d1d;
+      --card-border: #e6e6e6;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    .stickyunit {
+      position: fixed;
+      left: 0;
+      bottom: 10%;
+      width: var(--unit-width);
+      min-width: var(--unit-width);
+      scale: 0.8;
+      z-index: var(--unit-z-index);
+      transform-origin: left bottom;
+      animation: slideInLeft 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      direction: ltr;
+    }
+
+    @keyframes slideInLeft {
+      0% {
+        transform: translateX(-1000px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    #ADSTO3A {
+      width: 100%;
+      height: 28px;
+      background: var(--brand-bg);
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+    }
+
+    #PAds3A {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1;
+      color: #b9b9b9;
+      direction: ltr;
+    }
+
+    #PAds3A a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    #aAdsClose {
+      width: 18px;
+      height: 18px;
+      position: relative;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    #aAdsClose::before,
+    #aAdsClose::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 14px;
+      height: 1px;
+      background: #fff;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    #aAdsClose::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    .google-slot {
+      display: none;
+      border-bottom: 1px solid #f0f0f0;
+      background: #fff;
+      min-height: 100px;
+    }
+
+    .google-slot .adsbygoogle {
+      width: 100% !important;
+    }
+
+    .google-slot.visible {
+      display: block;
+    }
+
+    .product-slider {
+      width: 100%;
+      background: #fff;
+      position: relative;
+    }
+
+    .shipping-note {
+    margin: 0;
+    padding: 8px 10px;
+    font-size: 16px;
+    line-height: 1.35;
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    color: #111;
+    text-align: center;
+    font-weight: bold;
+    }
+
+    .category-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 10px;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .category-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+min-height: 20px;
+    padding: 4px 6px;
+    font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      color: #fff;
+    }
+
+    .category-link:hover {
+      opacity: 0.92;
+    }
+
+    .category-link--men {
+      background: var(--primary-color);
+      color: #111;
+    }
+
+    .category-link--women {
+      background: var(--secondary-color);
+      color: #fff;
+    }
+
+    .slider-track {
+      display: flex;
+      transition: transform 0.45s ease;
+      will-change: transform;
+    }
+
+    .slide {
+      width: 100%;
+      flex: 0 0 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      text-decoration: none;
+      color: #111;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .slide-media {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      height: auto;
+      background: #fff;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide-media img {
+      width: 90%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .slide-title {
+      margin: 8px 0 6px;
+      font-size: 14px;
+      line-height: 1.3;
+      height: 36px;
+      overflow: hidden;
+    }
+
+    .slider-state {
+      padding: 14px 10px;
+      font-size: 13px;
+      color: #666;
+      text-align: center;
+      border-top: 1px solid var(--card-border);
+    }
+  </style>
+</head>
+<body>
+  <div id="stickyunit" class="stickyunit" aria-live="polite">
+    <div id="ADSTO3A">
+      <p id="PAds3A">
+        Ads by
+        <a href="https://www.3a-d.com/advertisements/" target="_blank" rel="noopener noreferrer">3A Digital</a>
+      </p>
+      <span id="aAdsClose" aria-label="Close ad" role="button" tabindex="0"></span>
+    </div>
+
+    <div id="googleAdWrapper" class="google-slot" aria-hidden="true">
+      <ins
+        id="googleAdSlot"
+        class="adsbygoogle"
+        style="display:block;width:100%;height:90px"
+        data-ad-client="ca-pub-2350747023090620"
+        data-ad-slot="8226538717"
+        data-ad-format="horizontal"
+        data-full-width-responsive="false"
+      ></ins>
+    </div>
+
+    <div class="product-slider" id="productSlider">
+      <!-- <p class="shipping-note">توصيل مجاني داخل القاهرة الكبرى والإسكندرية</p> -->
+      <p class="shipping-note">ساعاتك بتحكي أناقتك قبل كلامك</p>
+     
+      <div id="sliderState" class="slider-state">جاري تحميل المنتجات...</div>
+      <div id="sliderTrack" class="slider-track" style="display: none;"></div>
+       <div class="category-links">
+        <a class="category-link category-link--men" href="https://zamanko.com/product-category/men/" target="_blank" rel="noopener noreferrer">Shop Men</a>
+        <a class="category-link category-link--women" href="https://zamanko.com/product-category/women/" target="_blank" rel="noopener noreferrer">Shop Women</a>
+      </div>
+    </div>
+  </div>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2350747023090620" crossorigin="anonymous"></script>
+
+  <script>
+    const CONFIG = {
+      domain: "https://zamanko.com",
+      productsTagSlug: "google-add",
+      productsCount: 5,
+      autoplayMs: 4000,
+
+      // لو محتاج تستخدم مفاتيح WooCommerce v3 حطهم هنا
+      wcConsumerKey: "",
+      wcConsumerSecret: ""
+    };
+
+    const closeBtn = document.getElementById("aAdsClose");
+    const stickyUnit = document.getElementById("stickyunit");
+    const googleAdWrapper = document.getElementById("googleAdWrapper");
+    const googleAdSlot = document.getElementById("googleAdSlot");
+
+    const sliderState = document.getElementById("sliderState");
+    const sliderTrack = document.getElementById("sliderTrack");
+
+    let currentSlideIndex = 0;
+    let autoplayTimer = null;
+    let products = [];
+
+    function mapStoreApiProduct(item) {
+      return {
+        id: item.id,
+        name: item.name || "منتج",
+        link: item.permalink || "#",
+        image: item.images && item.images[0] ? item.images[0].src : ""
+      };
+    }
+
+    function mapV3Product(item) {
+      return {
+        id: item.id,
+        name: item.name || "منتج",
+        link: item.permalink || "#",
+        image: item.images && item.images[0] ? item.images[0].src : ""
+      };
+    }
+
+    async function fetchTagIdBySlug() {
+      const tagUrl = new URL(`${CONFIG.domain}/wp-json/wp/v2/product_tag`);
+      tagUrl.searchParams.set("slug", CONFIG.productsTagSlug);
+      tagUrl.searchParams.set("per_page", "1");
+
+      const tagRes = await fetch(tagUrl.toString());
+      if (!tagRes.ok) {
+        throw new Error("Product tag request failed");
+      }
+
+      const tags = await tagRes.json();
+      if (!Array.isArray(tags) || !tags.length) {
+        throw new Error("Product tag not found");
+      }
+
+      return tags[0].id;
+    }
+
+    async function fetchProductsByStoreApi(tagId) {
+      const storeUrl = new URL(`${CONFIG.domain}/wp-json/wc/store/v1/products`);
+      storeUrl.searchParams.set("tag", String(tagId));
+      storeUrl.searchParams.set("per_page", String(CONFIG.productsCount));
+      storeUrl.searchParams.set("orderby", "date");
+      storeUrl.searchParams.set("order", "desc");
+
+      const storeRes = await fetch(storeUrl.toString());
+      if (!storeRes.ok) {
+        throw new Error("Store API request failed");
+      }
+
+      const storeData = await storeRes.json();
+      return storeData.map(mapStoreApiProduct);
+    }
+
+    async function fetchProductsByV3(tagId) {
+      const hasKeys = CONFIG.wcConsumerKey && CONFIG.wcConsumerSecret;
+      if (!hasKeys) {
+        throw new Error("WooCommerce keys are required for v3 fallback");
+      }
+
+      const v3Url = new URL(`${CONFIG.domain}/wp-json/wc/v3/products`);
+      v3Url.searchParams.set("tag", String(tagId));
+      v3Url.searchParams.set("per_page", String(CONFIG.productsCount));
+      v3Url.searchParams.set("orderby", "date");
+      v3Url.searchParams.set("order", "desc");
+      v3Url.searchParams.set("consumer_key", CONFIG.wcConsumerKey);
+      v3Url.searchParams.set("consumer_secret", CONFIG.wcConsumerSecret);
+
+      const v3Res = await fetch(v3Url.toString());
+      if (!v3Res.ok) {
+        throw new Error("WooCommerce v3 request failed");
+      }
+
+      const v3Data = await v3Res.json();
+      return v3Data.map(mapV3Product);
+    }
+
+    async function fetchProducts() {
+      const tagId = await fetchTagIdBySlug();
+
+      try {
+        return await fetchProductsByStoreApi(tagId);
+      } catch (err) {
+        return await fetchProductsByV3(tagId);
+      }
+    }
+
+    function renderSlider(items) {
+      products = items.slice(0, CONFIG.productsCount);
+      sliderTrack.innerHTML = "";
+
+      products.forEach((product) => {
+        const anchor = document.createElement("a");
+        anchor.className = "slide";
+        anchor.href = product.link;
+        anchor.target = "_blank";
+        anchor.rel = "noopener noreferrer";
+
+        anchor.innerHTML = `
+          <div class="slide-media">
+
+            ${product.image ? `<img src="${product.image}" alt="${product.name}">` : ""}
+          </div>
+          <p class="slide-title">${product.name}</p>
+        `;
+
+        sliderTrack.appendChild(anchor);
+      });
+
+      sliderState.style.display = "none";
+      sliderTrack.style.display = "flex";
+
+      goToSlide(0);
+      startAutoplay();
+    }
+
+    function goToSlide(index) {
+      if (!products.length) {
+        return;
+      }
+
+      currentSlideIndex = (index + products.length) % products.length;
+      sliderTrack.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+    }
+
+    function startAutoplay() {
+      if (products.length < 2) {
+        return;
+      }
+
+      clearInterval(autoplayTimer);
+      autoplayTimer = setInterval(() => {
+        goToSlide(currentSlideIndex + 1);
+      }, CONFIG.autoplayMs);
+    }
+
+    function initCloseAction() {
+      function closeUnit() {
+        stickyUnit.style.display = "none";
+        clearInterval(autoplayTimer);
+      }
+
+      closeBtn.addEventListener("click", closeUnit);
+      closeBtn.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          closeUnit();
+        }
+      });
+    }
+
+    function initGoogleAd() {
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        return;
+      }
+
+      // نظهر مساحة Google فقط إذا فعلا تم حقن iframe للإعلان
+      setTimeout(() => {
+        const hasIframe = !!googleAdSlot.querySelector("iframe");
+        if (hasIframe) {
+          googleAdWrapper.classList.add("visible");
+          googleAdWrapper.setAttribute("aria-hidden", "false");
+        }
+      }, 3000);
+    }
+
+    async function initProductSlider() {
+      try {
+        const items = await fetchProducts();
+        if (!items.length) {
+          sliderState.textContent = "لا توجد منتجات متاحة حاليا.";
+          return;
+        }
+
+        renderSlider(items);
+      } catch (error) {
+        sliderState.textContent = "تعذر تحميل المنتجات. أضف مفاتيح WooCommerce أو تحقق من الـ API.";
+      }
+    }
+
+    initCloseAction();
+    initGoogleAd();
+    initProductSlider();
+  </script>
+</body>
+</html>
